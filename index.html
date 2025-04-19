@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Calculator</title>
+  <style>
+    :root {
+      --primary-color: #4A90E2;
+      --bg-color: #f4f4f9;
+      --btn-color: #ffffff;
+      --btn-hover: #e0e7ff;
+      --btn-active: #c3dafe;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 15px 25px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      font-size: 1.8em;
+      font-weight: bold;
+    }
+
+    nav a {
+      color: white;
+      margin-left: 25px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .ad {
+      background-color: #e2e8f0;
+      text-align: center;
+      padding: 12px;
+      margin: 10px 20px;
+      border-radius: 8px;
+      font-size: 0.9em;
+      color: #333;
+    }
+
+    .calculator {
+      background: white;
+      margin: 30px auto;
+      padding: 25px;
+      max-width: 400px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .display {
+      width: 100%;
+      height: 70px;
+      font-size: 2em;
+      text-align: right;
+      padding: 15px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #f1f5f9;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .buttons button {
+      padding: 18px;
+      font-size: 1.1em;
+      font-weight: 500;
+      border: none;
+      border-radius: 10px;
+      background-color: var(--btn-color);
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      cursor: pointer;
+    }
+
+    .buttons button:hover {
+      background-color: var(--btn-hover);
+    }
+
+    .buttons button:active {
+      background-color: var(--btn-active);
+      transform: scale(0.97);
+    }
+
+    section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    footer {
+      margin-top: auto;
+      background-color: #e2e8f0;
+      text-align: center;
+      padding: 15px;
+      font-size: 0.9em;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">CalcTool</div>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <div class="ad">[Top Ad Space]</div>
+
+  <div class="calculator">
+    <input type="text" id="display" class="display" disabled />
+    <div class="buttons">
+      <button onclick="press('AC')">AC</button>
+      <button onclick="press('mc')">mc</button>
+      <button onclick="press('m-')">m-</button>
+      <button onclick="press('m+')">m+</button>
+      <button onclick="press('7')">7</button>
+      <button onclick="press('8')">8</button>
+      <button onclick="press('9')">9</button>
+      <button onclick="press('/')">÷</button>
+      <button onclick="press('4')">4</button>
+      <button onclick="press('5')">5</button>
+      <button onclick="press('6')">6</button>
+      <button onclick="press('*')">×</button>
+      <button onclick="press('1')">1</button>
+      <button onclick="press('2')">2</button>
+      <button onclick="press('3')">3</button>
+      <button onclick="press('-')">-</button>
+      <button onclick="press('0')">0</button>
+      <button onclick="press('.')">.</button>
+      <button onclick="press('%')">%</button>
+      <button onclick="press('+')">+</button>
+      <button onclick="press('+/-')">±</button>
+      <button onclick="press('@')">@</button>
+      <button onclick="del()">⌫</button>
+      <button onclick="calculate()">=</button>
+    </div>
+  </div>
+
+  <div class="ad">[Bottom Ad Space]</div>
+
+  <section id="about">
+    <h2>About</h2>
+    <p>This Smart Calculator is a simple and powerful tool that lets users perform standard arithmetic operations and memory functions easily through a user-friendly interface. Designed for both mobile and desktop use, it's built to handle daily number crunching with ease.</p>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>If you have any questions or suggestions, feel free to contact us at <a href="mailto:support@calctool.com">support@calctool.com</a>.</p>
+  </section>
+
+  <footer>
+    &copy; 2025 CalcTool. All rights reserved.
+  </footer>
+
+  <script>
+    let memory = 0;
+    let current = '';
+
+    function press(val) {
+      const display = document.getElementById('display');
+
+      switch(val) {
+        case 'AC':
+          current = '';
+          break;
+        case 'mc':
+          memory = 0;
+          break;
+        case 'm+':
+          memory += parseFloat(display.value || '0');
+          break;
+        case 'm-':
+          memory -= parseFloat(display.value || '0');
+          break;
+        case '+/-':
+        case '±':
+          current = display.value.startsWith('-') ? display.value.slice(1) : '-' + display.value;
+          break;
+        case '@':
+          current += '@'; // Placeholder, no function for @
+          break;
+        default:
+          current += val;
+      }
+      display.value = current;
+    }
+
+    function calculate() {
+      const display = document.getElementById('display');
+      try {
+        current = eval(current.replace('%', '/100'));
+        display.value = current;
+      } catch (e) {
+        display.value = 'Error';
+        current = '';
+      }
+    }
+
+    function del() {
+      const display = document.getElementById('display');
+      current = display.value.slice(0, -1);
+      display.value = current;
+    }
+  </script>
+</body>
+</html>
